@@ -5,7 +5,17 @@ Install-WindowsFeature -Name Web-Server -IncludeManagementTools -LogPath "$env:T
 # Get the VM's hostname, private IP address, and Azure region
 $hostname = $env:COMPUTERNAME
 $ipAddress = (Get-NetIPAddress | Where-Object {$_.AddressFamily -eq "IPv4" -and $_.InterfaceAlias -eq "Ethernet"}).IPAddress
-$region = (Invoke-RestMethod -Uri "http://169.254.169.254/metadata/instance/compute/location?api-version=$apiVersion&format=text").ToLower()
+
+# Define the desired API version
+$apiVersion = "2021-11-01" # Use the appropriate API version
+
+# Create a headers hashtable with the "Metadata" header
+$headers = @{
+    "Metadata" = "true"
+}
+
+# Retrieve the Azure region from the Instance Metadata Service
+$region = (Invoke-RestMethod -Uri "http://169.254.169.254/metadata/instance/compute/location?api-version=$apiVersion&format=text" -Headers $headers).ToLower()
 
 # Create an HTML file with the VM information
 $htmlContent = @"
@@ -15,9 +25,7 @@ $htmlContent = @"
     <title>Azure VM Info</title>
 </head>
 <body>
-    <h1>Hostname: $hostname</h1>
-    <h1>IP Address: $ipAddress</h1>
-    <h1>Region: $region</h1>
+    <h1>Hello from $hostname</h1> <h1>IP Address: $ipAddress</h1> <h1>Region: $region</h1>
 </body>
 </html>
 "@
