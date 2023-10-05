@@ -17,9 +17,7 @@ cat <<EOF | sudo tee /var/www/html/default.html
     <title>Azure VM Info</title>
 </head>
 <body>
-    <h1>Hostname: $hostname</h1>
-    <h1>IP Address: $ip_address</h1>
-    <h1>Region: $region</h1>
+    <h1>Hello from $hostname</h1> $ip_address</h1> <h1>Region: $region</h1>
 </body>
 </html>
 EOF
