@@ -1,5 +1,5 @@
 # Install IIS and required components
-Install-WindowsFeature -Name Web-Server -IncludeManagementTools
+Install-WindowsFeature -Name Web-Server -IncludeManagementTools -LogPath "$env:TEMP\init-webservervm_webserver_install_log_$logLabel.txt"
 
 # Get the VM's hostname, private IP address, and Azure region
 $hostname = $env:COMPUTERNAME
